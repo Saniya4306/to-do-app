@@ -1,7 +1,7 @@
 import { Box, Typography, Button, TextField } from "@mui/material";
 import React,{useState} from "react";
-//import {Link} from "react-router-dom";
-
+//import {NavLink} from "react-router-dom";
+import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 
 function Login() {
@@ -19,9 +19,15 @@ function handleSubmmission(){
   }
   console.log(value);
 }
+
+function submitHandler(e){
+  e.preventDefault();
+}
+  
   
   return (
     <>
+    <form onSubmit={submitHandler}>
       <Box 
         display={"flex"}
         flexDirection={"column"}
@@ -41,7 +47,7 @@ function handleSubmmission(){
       >
         
        
-        <Typography variant="h3" margin={'auto'} sx={{marginTop:2,marginBottom:2}}>Login</Typography>
+        <Typography variant="h4" margin={'auto'} sx={{marginTop:2,marginBottom:2,fontWeight:'bold'}}>Login <ExitToAppOutlinedIcon/></Typography>
         <TextField onChange={(e)=>{
                     setValue((prev)=>({...prev ,email: e.target.value}))
                   }}
@@ -63,12 +69,14 @@ function handleSubmmission(){
         margin="normal"/>
         <Typography sx={{color:'red '}}>{errorMsg}</Typography>
         <Button onClick={handleSubmmission}
+        endIcon={<ExitToAppOutlinedIcon/>}
          variant="contained" color="warning" sx={{ marginTop: 2 }}>
           Login
         </Button>
-        <Typography sx={{ marginTop: 2 }}>Dont have an account ?  <HowToRegOutlinedIcon/></Typography>
+      <Button sx={{ marginTop: 2 ,color:"black"}}>Dont have an account ?  <HowToRegOutlinedIcon/></Button>
        
       </Box>
+      </form>
     </>
   );
 }
