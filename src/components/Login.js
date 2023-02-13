@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword ,updateProfile} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Firebase";
 import { Box, Typography, Button, TextField } from "@mui/material";
 import React,{useState} from "react";
@@ -22,12 +22,8 @@ function handleSubmmission(){
 }else{
     setErrorMsg("")
     signInWithEmailAndPassword(auth,value.email, value.password)
-    .then(async(res)=>{
+    .then((res)=>{
         console.log(res);
-        const user = res.user;
-        await updateProfile(user,{
-          displayName : value.name
-         } );
         navigate("/Home");
     })
     .catch((err)=>{

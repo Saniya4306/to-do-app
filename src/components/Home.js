@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Todo from './Todo';
 
-export default function Home() {
+export default function Home(props) {
   return (
     <>
     <Box sx={{ flexGrow: 1 }}>
@@ -28,6 +28,11 @@ export default function Home() {
         </Toolbar>
       </AppBar>
     </Box>
+    <Typography variant='h4' alignItems={'center'}
+    fontWeight={'bold'} 
+    justifyContent={'center'}
+    display={'flex'}
+    marginTop={3}>{props.name ? `Welcome-${props.name} :)` : "Login please"}</Typography>
     <Todo/>
     </>
   );
