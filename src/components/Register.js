@@ -2,9 +2,15 @@ import { Box, Typography, Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../Firebase";
+import {useNavigate,Link} from "react-router-dom";
 
 
 function Register() {
+
+  const navigate = useNavigate();
+
     const [value, setValue] = useState({
       name : "",
       email:"",
@@ -13,13 +19,25 @@ function Register() {
     const [errorMsg , setErrorMsg] = useState("");
   
   function handleSubmmission(){
-    if(!value.email|| !value.password){
+    if(!value.name || !value.email || !value.password){
       setErrorMsg("Required all feilds");
-    }else{
-      setErrorMsg('');
-    }
-    console.log(value);
+      return;
+  }else{
+      setErrorMsg("")
+      createUserWithEmailAndPassword(auth,value.email, value.password)
+      .then(async(res)=>{
+          console.log(res);
+          navigate("/");
+      })
+      .catch((err)=>{
+          console.log(err);
+          setErrorMsg("your account is already existing")
+       
+      })
   }
+  console.log(value);
+}
+  
 
   function submitHandler(e){
     e.preventDefault();
@@ -82,7 +100,7 @@ function Register() {
            variant="contained" color="warning" sx={{ marginTop: 2 }}>
             Register
           </Button>
-          <Button sx={{ marginTop: 2 ,color:"black"}}>Dont have an account ?  <ExitToAppOutlinedIcon/></Button>
+          <Button sx={{ marginTop: 2 ,color:"black"}}>Dont have an account ? <Link to="/"><ExitToAppOutlinedIcon/></Link></Button>
          
         </Box>
         </form>

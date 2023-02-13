@@ -1,10 +1,15 @@
+import { signInWithEmailAndPassword ,updateProfile} from "firebase/auth";
+import { auth } from "../Firebase";
 import { Box, Typography, Button, TextField } from "@mui/material";
 import React,{useState} from "react";
-//import {NavLink} from "react-router-dom";
+import {Link,useNavigate} from "react-router-dom";
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 
 function Login() {
+
+  const navigate = useNavigate();
+
   const [value, setValue] = useState({
     email:"",
     password:""
@@ -12,12 +17,25 @@ function Login() {
   const [errorMsg , setErrorMsg] = useState("");
 
 function handleSubmmission(){
-  if(!value.email|| !value.password){
+  if( !value.email || !value.password){
     setErrorMsg("Required all feilds");
-  }else{
-    setErrorMsg('');
-  }
-  console.log(value);
+}else{
+    setErrorMsg("")
+    signInWithEmailAndPassword(auth,value.email, value.password)
+    .then(async(res)=>{
+        console.log(res);
+        const user = res.user;
+        await updateProfile(user,{
+          displayName : value.name
+         } );
+        navigate("/Home");
+    })
+    .catch((err)=>{
+        console.log(err);
+        setErrorMsg("The password and email entered is incorrect");
+    })
+}
+console.log(value);
 }
 
 function submitHandler(e){
@@ -70,10 +88,10 @@ function submitHandler(e){
         <Typography sx={{color:'red '}}>{errorMsg}</Typography>
         <Button onClick={handleSubmmission}
         endIcon={<ExitToAppOutlinedIcon/>}
-         variant="contained" color="warning" sx={{ marginTop: 2 }}>
+         variant="contained" color="warning" sx={{ marginTop: 2 ,textDecoration:'none'}}>
           Login
         </Button>
-      <Button sx={{ marginTop: 2 ,color:"black"}}>Dont have an account ?  <HowToRegOutlinedIcon/></Button>
+      <Button sx={{ marginTop: 2 ,color:"black"}}>Dont have an account ?<Link to="/Register"> <HowToRegOutlinedIcon/></Link></Button>
        
       </Box>
       </form>
